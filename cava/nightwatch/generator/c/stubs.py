@@ -76,7 +76,7 @@ def function_implementation(f: Function) -> Union[str, Expr]:
                 (long long)tp.tv_sec, tp.tv_nsec);
             if (__ava_endpoint.migration_call_id >= 0 && __call_id ==
             __ava_endpoint.migration_call_id) {{
-                printf("start live migration at call_id %d\\n", __call_id);
+                printf("start live migration at call_id %ld\\n", __call_id);
                 __ava_endpoint.migration_call_id = -2;
                 start_live_migration(__chan);
             }}

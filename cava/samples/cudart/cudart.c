@@ -5,6 +5,7 @@ ava_number(9);
 ava_cflags(-I/usr/local/cuda-10.1/include -I../headers -DAVA_RECORD_REPLAY -DAVA_BENCHMARKING_MIGRATE);
 ava_libs(-L/usr/local/cuda-10.1/lib64 -lcudart -lcuda -lcublas -lcudnn);
 ava_guestlib_srcs(extensions/migration_barrier.c);
+ava_worker_srcs(extensions/migration_barrier.c);  // TODO (#86) this is unnecessary but required to link correctly
 ava_export_qualifier();
 
 /**
@@ -33,7 +34,6 @@ ava_begin_utility;
 #include <cudnn.h>
 #include <glib.h>
 #include "cudart_nw_internal.h"
-
 #include <stdio.h>
 
 struct fatbin_wrapper {
@@ -1944,9 +1944,9 @@ ava_utility void __helper_guestlib_init_prologue() {
     migration_barrier_init();
 }
 
-ava_utility void __helper_guestlib_fini_prologue() {
+ava_utility void __helper_guestlib_fini_epilogue() {
     migration_barrier_destroy();
 }
 
 ava_guestlib_init_prologue(__helper_guestlib_init_prologue());
-ava_guestlib_fini_prologue(__helper_guestlib_fini_prologue());
+ava_guestlib_fini_epilogue(__helper_guestlib_fini_epilogue());
