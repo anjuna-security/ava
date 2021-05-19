@@ -44,9 +44,11 @@ ava_begin_utility;
 #include <cudnn.h>
 #include <curand.h>
 #include <cufft.h>
+#include <cufftXt.h>
 #include <cusparse.h>
 #include <cusolver_common.h>
 #include <cusolverDn.h>
+#include <cuda_profiler_api.h>
 #include <glib.h>
 
 #include "cudart_nw_internal.h"
@@ -2070,6 +2072,25 @@ cublasStatus_t CUBLASWINAPI cublasGetVector (int n, int elemSize, const void *x,
     abort();
 }
 
+cublasStatus_t CUBLASWINAPI
+cublasSetVectorAsync (int n, int elemSize,
+                      const void *hostPtr, int incx,
+                      void *devicePtr, int incy,
+                      cudaStream_t stream)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
+
+cublasStatus_t CUBLASWINAPI
+cublasGetVectorAsync (int n, int elemSize,
+                      const void *devicePtr, int incx,
+                      void *hostPtr, int incy,
+                      cudaStream_t stream)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
 
 CUBLASAPI cublasStatus_t  CUBLASWINAPI
 cublasGetMathMode(cublasHandle_t handle, cublasMath_t *mode)
@@ -23197,35 +23218,37 @@ __host__ cudaError_t CUDARTAPI cudaDeviceGetPCIBusId(char *pciBusId, int len, in
     abort();
 }
 
-// __host__ cudaError_t CUDARTAPI cudaIpcGetEventHandle(cudaIpcEventHandle_t *handle, cudaEvent_t event)
-// {
-//     fprintf(stderr, "%s is not implemented\n", __func__);
-//     abort();
-// }
-//
-// __host__ cudaError_t CUDARTAPI cudaIpcOpenEventHandle(cudaEvent_t *event, cudaIpcEventHandle_t handle)
-// {
-//     fprintf(stderr, "%s is not implemented\n", __func__);
-//     abort();
-// }
-//
-// __host__ cudaError_t CUDARTAPI cudaIpcGetMemHandle(cudaIpcMemHandle_t *handle, void *devPtr)
-// {
-//     fprintf(stderr, "%s is not implemented\n", __func__);
-//     abort();
-// }
+__host__ cudaError_t CUDARTAPI cudaIpcGetEventHandle(cudaIpcEventHandle_t *handle, cudaEvent_t event)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
 
-// __host__ cudaError_t CUDARTAPI cudaIpcOpenMemHandle(void **devPtr, cudaIpcMemHandle_t handle, unsigned int flags)
-// {
-//     fprintf(stderr, "%s is not implemented\n", __func__);
-//     abort();
-// }
-//
-// __host__ cudaError_t CUDARTAPI cudaIpcCloseMemHandle(void *devPtr)
-// {
-//     fprintf(stderr, "%s is not implemented\n", __func__);
-//     abort();
-// }
+__host__ cudaError_t CUDARTAPI cudaIpcOpenEventHandle(cudaEvent_t *event, cudaIpcEventHandle_t handle)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
+
+__host__ cudaError_t CUDARTAPI cudaIpcGetMemHandle(cudaIpcMemHandle_t *handle, void *devPtr)
+{
+    ava_argument(devPtr) ava_opaque;
+    ava_argument(handle) {
+        ava_out; ava_buffer(1);
+    }
+}
+
+__host__ cudaError_t CUDARTAPI cudaIpcOpenMemHandle(void **devPtr, cudaIpcMemHandle_t handle, unsigned int flags)
+{
+    ava_argument(devPtr) {
+        ava_out; ava_buffer(1); ava_element ava_opaque;
+    }
+}
+
+__host__ cudaError_t CUDARTAPI cudaIpcCloseMemHandle(void *devPtr)
+{
+  ava_argument(devPtr) ava_opaque;
+}
 
 ava_begin_replacement;
 EXPORTED __host__ __cudart_builtin__ cudaError_t CUDARTAPI cudaPeekAtLastError(void)
@@ -24161,6 +24184,109 @@ __host__ cudaError_t CUDARTAPI cudaGraphDestroy(cudaGraph_t graph)
     fprintf(stderr, "%s is not implemented\n", __func__);
     abort();
 }
+
+size_t CUDNNWINAPI
+cudnnGetVersion(void);
+
+size_t CUDNNWINAPI
+cudnnGetCudartVersion(void);
+
+cusparseStatus_t CUSPARSEAPI
+cusparseDcsrmm2(cusparseHandle_t         handle,
+                cusparseOperation_t      transA,
+                cusparseOperation_t      transB,
+                int                      m,
+                int                      n,
+                int                      k,
+                int                      nnz,
+                const double*            alpha,
+                const cusparseMatDescr_t descrA,
+                const double* csrSortedValA,
+                const int*    csrSortedRowPtrA,
+                const int*    csrSortedColIndA,
+                const double* B,
+                int           ldb,
+                const double* beta,
+                double*       C,
+                int           ldc)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
+
+cufftResult CUFFTAPI cufftXtExec(cufftHandle plan,
+                                 void *input,
+                                 void *output,
+                                 int direction)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
+
+cufftResult CUFFTAPI cufftXtMakePlanMany(cufftHandle plan,
+                                         int rank,
+                                         long long int *n,
+                                         long long int *inembed,
+                                         long long int istride,
+                                         long long int idist,
+                                         cudaDataType inputtype,
+                                         long long int *onembed,
+                                         long long int ostride,
+                                         long long int odist,
+                                         cudaDataType outputtype,
+                                         long long int batch,
+                                         size_t *workSize,
+                                         cudaDataType executiontype)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
+
+cusparseStatus_t CUSPARSEAPI
+cusparseScsrmm2(cusparseHandle_t         handle,
+                cusparseOperation_t      transA,
+                cusparseOperation_t      transB,
+                int                      m,
+                int                      n,
+                int                      k,
+                int                      nnz,
+                const float*             alpha,
+                const cusparseMatDescr_t descrA,
+                const float*             csrSortedValA,
+                const int*               csrSortedRowPtrA,
+                const int*               csrSortedColIndA,
+                const float*             B,
+                int                      ldb,
+                const float*             beta,
+                float*                   C,
+                int                      ldc)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
+
+const char *CUDNNWINAPI
+cudnnGetErrorString(cudnnStatus_t status)
+{
+    const char *ret = reinterpret_cast<const char *>(ava_execute());
+    ava_return_value {
+        ava_out; ava_buffer(strlen(ret) + 1);
+        ava_lifetime_static;
+    }
+}
+
+__host__ cudaError_t CUDARTAPI
+cudaProfilerInitialize(const char *configFile,
+                       const char *outputFile,
+                       cudaOutputMode_t outputMode)
+{
+    fprintf(stderr, "%s is not implemented\n", __func__);
+    abort();
+}
+
+__host__ cudaError_t CUDARTAPI cudaProfilerStart(void);
+
+__host__ cudaError_t CUDARTAPI cudaProfilerStop(void);
 
 /**
  * Initialization code in the generated code.
