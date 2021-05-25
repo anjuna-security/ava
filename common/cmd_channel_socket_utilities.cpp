@@ -160,7 +160,7 @@ struct command_base *command_channel_socket_receive_command(struct command_chann
                 cmd_base.command_size + cmd_base.region_size - sizeof(struct command_base));
     pthread_mutex_unlock(&chan->recv_mutex);
 
-    command_channel_socket_print_command(c, cmd);
+//    command_channel_socket_print_command(c, cmd);
     return cmd;
   }
 
