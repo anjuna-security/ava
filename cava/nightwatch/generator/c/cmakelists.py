@@ -68,6 +68,7 @@ target_link_libraries(${{SUBPROJECT_PREFIX}}_worker
   ${{Boost_LIBRARIES}}
   Threads::Threads
   {api.libs}
+  ${{CMAKE_BINARY_DIR}}/third_party/fmt/libfmtd.a
 )
 set_target_properties(${{SUBPROJECT_PREFIX}}_worker PROPERTIES OUTPUT_NAME "worker")
 
@@ -97,6 +98,7 @@ target_link_libraries(${{SUBPROJECT_PREFIX}}_guestlib
   ${{Boost_LIBRARIES}}
   Threads::Threads
   ${{Config++}}
+  ${{CMAKE_BINARY_DIR}}/third_party/fmt/libfmtd.a
 )
 target_compile_options(${{SUBPROJECT_PREFIX}}_guestlib
   PUBLIC -fvisibility=hidden
