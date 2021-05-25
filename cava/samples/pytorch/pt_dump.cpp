@@ -234,7 +234,7 @@ ava_utility void __helper_dump_fatbin(void *fatCubin,
             if (g_hash_table_lookup(*fatbin_funcs, name) != NULL)
               continue;
 
-            DEBUG_PRINT("[%d] %s@\n", *num_funcs, name);
+            ava_debug("[%d] %s@\n", *num_funcs, name);
 
             /* Create a new hash table entry */
             func = (struct fatbin_function *)g_malloc(sizeof(struct fatbin_function));
@@ -357,7 +357,7 @@ ava_utility void __helper_dump_fatbin(void *fatCubin,
                     file_name, errno, strerror(errno), __FILE__, __LINE__);
                 exit(EXIT_FAILURE);
             }
-            DEBUG_PRINT("Fatbinary counter = %d\n", ava_metadata(NULL)->num_fatbins);
+            ava_debug("Fatbinary counter = %d\n", ava_metadata(NULL)->num_fatbins);
             ret = write(fd, (const void *)&(ava_metadata(NULL)->num_fatbins), sizeof(int));
             if (ret == -1) {
                 fprintf(stderr, "write [errno=%d, errstr=%s] at %s:%d",

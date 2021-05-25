@@ -386,8 +386,8 @@ ava_utility void __helper_load_function_arg_info(void)
             exit(EXIT_FAILURE);
         }
 
-        DEBUG_PRINT("function %d (%s) has argc = %d\n",
-                    fatbin_funcs->len - 1, func_name, func->argc);
+        ava_debug("function %d (%s) has argc = %d\n",
+                  fatbin_funcs->len - 1, func_name, func->argc);
         /* Insert into the function table */
         g_ptr_array_add(fatbin_funcs, (gpointer)func);
 
