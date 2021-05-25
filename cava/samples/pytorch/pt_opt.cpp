@@ -1016,13 +1016,34 @@ cudaSetupArgument(const void *arg, size_t size, size_t offset)
     ava_unsupported;
 }
 
-__host__ __cudart_builtin__ cudaError_t CUDARTAPI
-cudaGetDevice(int *device)
+/*
+cudaError_t
+__pool_cudaGetDevice(int *device)
 {
     ava_argument(device) {
         ava_out; ava_buffer(1);
     }
 }
+*/
+
+ava_begin_replacement;
+EXPORTED __host__ __cudart_builtin__ cudaError_t CUDARTAPI
+cudaGetDevice(int *device)
+
+{
+//    static int curDevice = -1;
+    cudaError_t res = static_cast<cudaError_t>(CUDA_SUCCESS);
+
+    *device = 0;
+
+//    if (curDevice == -1)
+//        res = __pool_cudaGetDevice(&curDevice);
+
+//    *device = curDevice;
+
+    return res;
+}
+ava_end_replacement;
 
 __cudart_builtin__ cudaError_t CUDARTAPI
 cudaGetDeviceCount(int *count)
